@@ -19,11 +19,13 @@ LOG = logging.getLogger('cryptostore')
 
 
 class Redis(Cache):
-    def __init__(self, ip, port, del_after_read=True, flush=False):
+    def __init__(self, ip, port, unix_socket_path,use_socket=True, del_after_read=True, flush=False):
         self.del_after_read = del_after_read
         self.last_id = {}
         self.ids = defaultdict(list)
-        self.conn = StorageEngines.redis.Redis(ip, port, decode_responses=True)
+        #self.conn = StorageEngines.redis.Redis(ip, port, decode_responses=True)
+        if use_socket:
+            self.conn = StorageEngines.redis.Redis(unix_socket_path, decode_responses=True)
         if flush:
             LOG.info('Flushing cache')
             self.conn.flushall()

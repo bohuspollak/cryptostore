@@ -39,6 +39,8 @@ class Aggregator(Process):
         if self.config.cache == 'redis':
             cache = Redis(self.config.redis['ip'],
                           self.config.redis['port'],
+                          self.config.redis['unix_socket_path'],
+                          use_sockets=self.config.redis['use_socket'],
                           del_after_read=self.config.redis['del_after_read'],
                           flush=self.config.redis['start_flush'])
         elif self.config.cache == 'kafka':
